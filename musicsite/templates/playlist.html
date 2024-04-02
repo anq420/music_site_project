@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ playlist.title }}</title>
+</head>
+<body>
+    {% for song in playlist.songs.all %}
+    {{ song.artist.nickname }} - {{ song.title }}<br>
+    <audio controls>
+        <source src="{{ song.song_file.url }}" type="audio/mpeg">
+    </audio><hr><br>
+    {% endfor %}
+</body>
+</html>

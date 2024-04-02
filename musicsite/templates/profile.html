@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ artist.nickname }}</title>
+</head>
+<body>
+    {% if not user.is_authenticated %}
+    If you do not have an account here:
+    <button onclick="window.location.href = 'sign-up/';">Sign Up</button><br>
+    If you already have an account here:
+    <button onclick="window.location.href = 'sign-in/';">Sign In</button>
+    {% else %}
+    <button onclick="window.location.href = 'logout/';">Logout</button>
+    <button onclick="window.location.href = '{% url 'settings' %}';">Settings</button>
+    <button onclick="window.location.href = '{% url 'profile' user.id %}';">Profile</button>
+    {% endif %}
+    <button onclick="window.location.href = '{% url 'main' %}';">Main</button><br><br>
+
+    About musician:<br>
+    <img src="{{ artist.image.url }}" alt="img" style="max-width: 200px"><br>
+    Nickname: {{ artist.nickname }}<br>
+    First name: {{ artist.first_name }}<br>
+    Second name: {{ artist.last_name }}<br>
+    Country: {{ artist.country }}<br>
+    City: {{ artist.city }}<br><br><br>
+
+    Songs and albums:<br>
+    {% if not songs %}
+        There are no songs yet
+    {% else %}
+        {% for song in songs %}
+        <hr>{{ song.artist.nickname }} - {{ song.title }}<br>
+        <audio controls>
+              <source src="{{ song.song_file.url }}" type="audio/mpeg">
+        </audio><hr><br>
+        {% endfor %}
+    {% endif %}
+
+    {% for album in albums %}
+        <hr><img src="{{ album.image.url }}" alt="img" style="max-width: 200px"><br>
+        <a href="profile/{{ album.artist.id }}/">{{ album.artist.nickname }}</a> - {{ album.title }}<br><br>
+        Tracklist:<br>
+        {% for song in album.songs.all %}
+            {{ song.title }}<br>
+                    <audio controls>
+              <source src="{{ song.song_file.url }}" type="audio/mpeg">
+        </audio><br>
+        {% endfor %}
+    {% endfor %}
+    
+</body>
+</html>
